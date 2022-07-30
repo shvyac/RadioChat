@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32714.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatClient", "RadioChat\RadioChatClient.csproj", "{36AC7220-0BDB-49C9-9E8C-ECD4ED8B998C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B} = {412D1C0C-3D0E-467B-9102-AE4D0187C52B}
+		{DC899F67-9CD6-4D65-93B1-06C7134BF72D} = {DC899F67-9CD6-4D65-93B1-06C7134BF72D}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatServer", "RadioChatServer\RadioChatServer.csproj", "{CE1C83E6-4E71-402E-AE28-E3384F85A26B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583} = {0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583}
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B} = {412D1C0C-3D0E-467B-9102-AE4D0187C52B}
+		{B830663E-CA56-4429-93EF-747C40ECFDCC} = {B830663E-CA56-4429-93EF-747C40ECFDCC}
+		{DC899F67-9CD6-4D65-93B1-06C7134BF72D} = {DC899F67-9CD6-4D65-93B1-06C7134BF72D}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatClientLibrary", "RadioChatClientLibrary\RadioChatClientLibrary.csproj", "{DC899F67-9CD6-4D65-93B1-06C7134BF72D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B} = {412D1C0C-3D0E-467B-9102-AE4D0187C52B}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TcpChatClientLibrary", "TcpChatClientLibrary\TcpChatClientLibrary.csproj", "{412D1C0C-3D0E-467B-9102-AE4D0187C52B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatServerLibrary", "DobonChatServerLibrary\RadioChatServerLibrary.csproj", "{B830663E-CA56-4429-93EF-747C40ECFDCC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583} = {0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583}
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B} = {412D1C0C-3D0E-467B-9102-AE4D0187C52B}
+		{DC899F67-9CD6-4D65-93B1-06C7134BF72D} = {DC899F67-9CD6-4D65-93B1-06C7134BF72D}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TcpChatServerLibrary", "TcpChatServerLibrary\TcpChatServerLibrary.csproj", "{0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583}"
+	ProjectSection(ProjectDependencies) = postProject
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B} = {412D1C0C-3D0E-467B-9102-AE4D0187C52B}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36AC7220-0BDB-49C9-9E8C-ECD4ED8B998C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36AC7220-0BDB-49C9-9E8C-ECD4ED8B998C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36AC7220-0BDB-49C9-9E8C-ECD4ED8B998C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36AC7220-0BDB-49C9-9E8C-ECD4ED8B998C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE1C83E6-4E71-402E-AE28-E3384F85A26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE1C83E6-4E71-402E-AE28-E3384F85A26B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE1C83E6-4E71-402E-AE28-E3384F85A26B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE1C83E6-4E71-402E-AE28-E3384F85A26B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC899F67-9CD6-4D65-93B1-06C7134BF72D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC899F67-9CD6-4D65-93B1-06C7134BF72D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC899F67-9CD6-4D65-93B1-06C7134BF72D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC899F67-9CD6-4D65-93B1-06C7134BF72D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{412D1C0C-3D0E-467B-9102-AE4D0187C52B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B830663E-CA56-4429-93EF-747C40ECFDCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B830663E-CA56-4429-93EF-747C40ECFDCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B830663E-CA56-4429-93EF-747C40ECFDCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B830663E-CA56-4429-93EF-747C40ECFDCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C0C0902-24B4-4D84-A249-F73DAC0046E1}
+	EndGlobalSection
+EndGlobal

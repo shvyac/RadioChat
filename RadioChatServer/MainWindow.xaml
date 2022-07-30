@@ -1,0 +1,41 @@
+﻿<Window x:Class="RadioChatServerApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RadioChatServerApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <RichTextBox x:Name="logTextBox" HorizontalAlignment="Left" Height="45" Margin="85,49,0,0" VerticalAlignment="Top" Width="85">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <ListView x:Name="clientViewList" HorizontalAlignment="Left" Height="100" Margin="110,139,0,0" VerticalAlignment="Top" Width="245" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <StatusBar x:Name="mainStatusbar" Height="25" VerticalAlignment="Bottom">
+            <TextBox x:Name="TextBoxStatusBar" TextWrapping="Wrap" Text="TextBox" Width="120"/>
+        </StatusBar>
+        <Menu x:Name="menuMain" Height="25" VerticalAlignment="Top">
+            <MenuItem x:Name="menuFile" Header="File">
+                <MenuItem x:Name="menuExit" Header="Exit" Click="menuExit_Click"/>
+            </MenuItem>
+            <MenuItem x:Name="menuConnect" Header="Connect">
+                <MenuItem x:Name="menuStopListen" Header="StopListen" Click="menuStopListen_Click"/>
+                <MenuItem x:Name="menuListen" Header="Listen" Click="menuListen_Click"/>
+                <MenuItem x:Name="menuItem1" Header="Item1"/>
+                <MenuItem x:Name="menuDisconnectClient" Header="DisconnectClient" Click="menuDisconnectClient_Click"/>
+                <MenuItem x:Name="menuDisconnectAllClient" Header="DisconnectAllClient" Click="menuDisconnectAllClient_Click"/>
+            </MenuItem>
+        </Menu>
+
+    </Grid>
+</Window>
