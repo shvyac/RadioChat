@@ -1,5 +1,5 @@
 # RadioChat
-Multi Client Chat Application, WPF.NET6 c#
+Multi Client Chat Application, WPF.NET6 Desktop c#
 
 
 # References
