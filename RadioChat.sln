@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32714.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatClient", "RadioChat\RadioChatClient.csproj", "{36AC7220-0BDB-49C9-9E8C-ECD4ED8B998C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatClient", "RadioChatClient\RadioChatClient.csproj", "{36AC7220-0BDB-49C9-9E8C-ECD4ED8B998C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{412D1C0C-3D0E-467B-9102-AE4D0187C52B} = {412D1C0C-3D0E-467B-9102-AE4D0187C52B}
 		{DC899F67-9CD6-4D65-93B1-06C7134BF72D} = {DC899F67-9CD6-4D65-93B1-06C7134BF72D}
