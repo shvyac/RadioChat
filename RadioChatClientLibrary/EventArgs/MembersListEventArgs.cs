@@ -12,13 +12,13 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._members;
+				return _members;
 			}
 		}
 
 		public MembersListEventArgs(string[] mems)
 		{
-			this._members = mems;
+			_members = mems;
 		}
 	}
 }

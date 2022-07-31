@@ -5,27 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RadioChatServerApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Server" Height="270" Width="645">
     <Grid>
-        <RichTextBox x:Name="logTextBox" HorizontalAlignment="Left" Height="45" Margin="85,49,0,0" VerticalAlignment="Top" Width="85">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text="RichTextBox"/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
-        <ListView x:Name="clientViewList" HorizontalAlignment="Left" Height="100" Margin="110,139,0,0" VerticalAlignment="Top" Width="245" d:ItemsSource="{d:SampleData ItemCount=5}">
+        <ListView x:Name="clientViewList" HorizontalAlignment="Left" Height="200" Margin="5,25,0,0" VerticalAlignment="Top" Width="315" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <StatusBar x:Name="mainStatusbar" Height="25" VerticalAlignment="Bottom">
-            <TextBox x:Name="TextBoxStatusBar" TextWrapping="Wrap" Text="TextBox" Width="120"/>
+        <StatusBar x:Name="mainStatusbar" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Background="{x:Null}">
+            <TextBox x:Name="TextBoxStatusBar" TextWrapping="Wrap" Text="TextBox" Width="400" Background="{x:Null}" BorderBrush="{x:Null}"/>
         </StatusBar>
-        <Menu x:Name="menuMain" Height="25" VerticalAlignment="Top">
-            <MenuItem x:Name="menuFile" Header="File">
+        <Menu x:Name="menuMain" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="2">
+            <MenuItem x:Name="menuFile" Header="File" Width="60" HorizontalContentAlignment="Center" FontStretch="SemiCondensed">
                 <MenuItem x:Name="menuExit" Header="Exit" Click="menuExit_Click"/>
             </MenuItem>
             <MenuItem x:Name="menuConnect" Header="Connect">
@@ -36,6 +29,7 @@
                 <MenuItem x:Name="menuDisconnectAllClient" Header="DisconnectAllClient" Click="menuDisconnectAllClient_Click"/>
             </MenuItem>
         </Menu>
+        <TextBox x:Name="TextBoxMSG" HorizontalAlignment="Left" Height="200" Margin="325,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
 
     </Grid>
 </Window>

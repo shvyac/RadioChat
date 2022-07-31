@@ -5,7 +5,7 @@ using System.Net.Sockets;
 namespace Radio.Net.Chat
 {
 	/// <summary>
-	/// Dobon Chat Serverの機能を提供する
+	/// RadioChatServerの機能を提供する
 	/// </summary>
 	public class RadioChatServer : TcpChatServer
 	{
@@ -16,9 +16,9 @@ namespace Radio.Net.Chat
 		public event ServerEventHandler LoggedinMember;
 		private void OnLoggedinMember(ServerEventArgs e)
 		{
-			if (this.LoggedinMember != null)
+			if (LoggedinMember != null)
 			{
-				this.LoggedinMember(this, e);
+				LoggedinMember(this, e);
 			}
 		}
 
@@ -28,15 +28,15 @@ namespace Radio.Net.Chat
 		public event ServerEventHandler LoggedoutMember;
 		private void OnLoggedoutMember(ServerEventArgs e)
 		{
-			if (this.LoggedoutMember != null)
+			if (LoggedoutMember != null)
 			{
-				this.LoggedoutMember(this, e);
+				LoggedoutMember(this, e);
 			}
 		}
 		#endregion
 
 		/// <summary>
-		/// DobonChatServerのコンストラクタ
+		/// RadioChatServerのコンストラクタ
 		/// </summary>
 		public RadioChatServer() : base()
 		{
@@ -47,7 +47,7 @@ namespace Radio.Net.Chat
 			//CRLFを削除
 			msg = msg.Replace("\r\n", "");
 
-			this.SendToAllClients(ServerCommands.Message + " _HOST " + msg);
+			SendToAllClients(ServerCommands.Message + " _HOST " + msg);
 		}
 
 		/// <summary>
@@ -57,9 +57,9 @@ namespace Radio.Net.Chat
 		/// <returns>見つかった時はAcceptedChatClientオブジェクト</returns>
 		public AcceptedChatClient FindMember(string nickName)
 		{
-			lock (this._acceptedClients.SyncRoot)
+			lock (_acceptedClients.SyncRoot)
 			{
-				foreach (AcceptedChatClient c in this._acceptedClients)
+				foreach (AcceptedChatClient c in _acceptedClients)
 				{
 					if (c.Name == nickName)
 						return c;
@@ -85,7 +85,7 @@ namespace Radio.Net.Chat
 				//チャット参加コマンド
 				if (client.LoginState != LoginState.Parted)
 				{
-					this.SendErrorMessage(client, "すでに参加しています。");
+					SendErrorMessage(client, "すでに参加しています。");
 					return;
 				}
 
@@ -94,18 +94,18 @@ namespace Radio.Net.Chat
 				if (nickName.Length == 0 || nickName.IndexOf(' ') >= 0 ||
 					nickName.StartsWith("_"))
 				{
-					this.SendErrorMessage(client, "名前が不正です。");
+					SendErrorMessage(client, "名前が不正です。");
 					return;
 				}
 
 				//同じ名前がないか調べる
-				lock (this._acceptedClients.SyncRoot)
+				lock (_acceptedClients.SyncRoot)
 				{
-					foreach (AcceptedChatClient c in this._acceptedClients)
+					foreach (AcceptedChatClient c in _acceptedClients)
 					{
 						if (nickName == c.Name)
 						{
-							this.SendErrorMessage(client, "同じ名前のメンバーがすでにログインしています。");
+							SendErrorMessage(client, "同じ名前のメンバーがすでにログインしています。");
 							return;
 						}
 					}
@@ -116,68 +116,68 @@ namespace Radio.Net.Chat
 				}
 
 				//イベント発生
-				this.OnLoggedinMember(new ServerEventArgs(client));
+				OnLoggedinMember(new ServerEventArgs(client));
 				//クライアントに通知
-				this.SendToAllClients(ServerCommands.JoinMember + " _HOST " + client.Name);
+				SendToAllClients(ServerCommands.JoinMember + " _HOST " + client.Name);
 				//メンバリストを送る
-				this.SendMembersList(client);
+				SendMembersList(client);
 			}
 			else if (ClientCommands.Logout == cmds[0])
 			{
 				//退室コマンド
 				if (client.LoginState != LoginState.Joined)
 				{
-					this.SendErrorMessage(client, "チャットに参加していません。");
+					SendErrorMessage(client, "チャットに参加していません。");
 					return;
 				}
 				
 				//状態の更新
 				client.LoginState = LoginState.Parted;
 				//イベント発生
-				this.OnLoggedoutMember(new ServerEventArgs(client));
+				OnLoggedoutMember(new ServerEventArgs(client));
 				//クライアントに通知
-				this.SendToAllClients(ServerCommands.PartMember + " _HOST " + client.Name);
+				SendToAllClients(ServerCommands.PartMember + " _HOST " + client.Name);
 			}
 			else if (ClientCommands.MembersList == cmds[0])
 			{
 				//メンバリスト要求コマンド
 				if (client.LoginState != LoginState.Joined)
 				{
-					this.SendErrorMessage(client, "チャットに参加していません。");
+					SendErrorMessage(client, "チャットに参加していません。");
 					return;
 				}
 
 				//メンバリストを送る
-				this.SendMembersList(client);
+				SendMembersList(client);
 			}
 			else if (ClientCommands.Message == cmds[0])
 			{
 				//メッセージ送信コマンド
 				if (client.LoginState != LoginState.Joined)
 				{
-					this.SendErrorMessage(client, "チャットに参加していません。");
+					SendErrorMessage(client, "チャットに参加していません。");
 					return;
 				}
 
 				//クライアントにメッセージを送信
-				this.SendToAllClients(ServerCommands.Message + " " + client.Name + " " + cmds[1]);
+				SendToAllClients(ServerCommands.Message + " " + client.Name + " " + cmds[1]);
 			}
 			else if (ClientCommands.PrivateMessage == cmds[0])
 			{
 				//プライベートメッセージ送信コマンド
 				if (client.LoginState != LoginState.Joined)
 				{
-					this.SendErrorMessage(client, "チャットに参加していません。");
+					SendErrorMessage(client, "チャットに参加していません。");
 					return;
 				}
 
 				string[] msgs = cmds[1].Split(new char[] {' '}, 2);
 
 				//名前からクライアントを探す
-				AcceptedChatClient toClient = this.FindMember(msgs[0]);
+				AcceptedChatClient toClient = FindMember(msgs[0]);
 				if (toClient == null)
 				{
-					this.SendErrorMessage(client, "送信先の参加者が見つかりません。");
+					SendErrorMessage(client, "送信先の参加者が見つかりません。");
 					return;
 				}
 
@@ -202,7 +202,7 @@ namespace Radio.Net.Chat
 
 			//メンバのログアウトを通知する
 			if (clientName.Length > 0)
-				this.SendToAllClients(ServerCommands.PartMember + " _HOST " + clientName);
+				SendToAllClients(ServerCommands.PartMember + " _HOST " + clientName);
 		}
 
 		protected override TcpChatClient CreateChatClient(Socket soc)
@@ -226,9 +226,9 @@ namespace Radio.Net.Chat
 		private void SendMembersList(TcpChatClient client)
 		{
 			string msg = "";
-			lock (this._acceptedClients.SyncRoot)
+			lock (_acceptedClients.SyncRoot)
 			{
-				foreach (AcceptedChatClient c in this._acceptedClients)
+				foreach (AcceptedChatClient c in _acceptedClients)
 				{
 					msg += c.Name + " ";
 				}

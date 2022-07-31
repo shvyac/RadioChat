@@ -12,13 +12,13 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._errorMessage;
+				return _errorMessage;
 			}
 		}
 
 		public ReceivedErrorEventArgs(string msg)
 		{
-			this._errorMessage = msg;
+			_errorMessage = msg;
 		}
 	}
 }

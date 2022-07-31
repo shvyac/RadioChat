@@ -12,7 +12,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._from;
+				return _from;
 			}
 		}
 
@@ -21,7 +21,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._message;
+				return _message;
 			}
 		}
 
@@ -30,7 +30,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._privateMessage;
+				return _privateMessage;
 			}
 		}
 
@@ -40,9 +40,9 @@ namespace Radio.Net.Chat
 
 		public ReceivedMessageEventArgs(string fromMem, string msg, bool privMsg)
 		{
-			this._from = fromMem;
-			this._message = msg;
-			this._privateMessage = privMsg;
+			_from = fromMem;
+			_message = msg;
+			_privateMessage = privMsg;
 		}
 	}
 }

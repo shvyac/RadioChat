@@ -39,7 +39,7 @@ namespace Radio.Net.Chat
 	#endregion
 
 	/// <summary>
-	/// Dobon Chat Clientの機能を提供する
+	/// RadioChatClientの機能を提供する
 	/// </summary>
 	public class RadioChatClient : TcpChatClient
 	{
@@ -50,9 +50,9 @@ namespace Radio.Net.Chat
 		public event ReceivedMessageEventHandler ReceivedMessage;
 		private void OnReceivedMessage(ReceivedMessageEventArgs e)
 		{
-			if (this.ReceivedMessage != null)
+			if (ReceivedMessage != null)
 			{
-				this.ReceivedMessage(this, e);
+				ReceivedMessage(this, e);
 			}
 		}
 
@@ -63,14 +63,14 @@ namespace Radio.Net.Chat
 		private void OnReceivedError(ReceivedErrorEventArgs e)
 		{
 			//参加要求が失敗した時
-			if (this.LoginState == LoginState.WaitJoin)
+			if (LoginState == LoginState.WaitJoin)
 			{
-				this._loginState = LoginState.Parted;
+				_loginState = LoginState.Parted;
 			}
 
-			if (this.ReceivedError != null)
+			if (ReceivedError != null)
 			{
-				this.ReceivedError(this, e);
+				ReceivedError(this, e);
 			}
 		}
 
@@ -81,14 +81,14 @@ namespace Radio.Net.Chat
 		private void OnJoinedMember(MemberEventArgs e)
 		{
 			//自分の時は参加状態に
-			if (this._name == e.Name)
+			if (_name == e.Name)
 			{
-				this._loginState = LoginState.Joined;
+				_loginState = LoginState.Joined;
 			}
 
-			if (this.JoinedMember != null)
+			if (JoinedMember != null)
 			{
-				this.JoinedMember(this, e);
+				JoinedMember(this, e);
 			}
 		}
 
@@ -99,14 +99,14 @@ namespace Radio.Net.Chat
 		private void OnPartedMember(MemberEventArgs e)
 		{
 			//自分の時は退室状態に
-			if (this._name == e.Name)
+			if (_name == e.Name)
 			{
-				this._loginState = LoginState.Parted;
+				_loginState = LoginState.Parted;
 			}
 
-			if (this.PartedMember != null)
+			if (PartedMember != null)
 			{
-				this.PartedMember(this, e);
+				PartedMember(this, e);
 			}
 		}
 
@@ -116,9 +116,9 @@ namespace Radio.Net.Chat
 		public event MembersListEventHandler UpdatedMembers;
 		private void OnUpdatedMembers(MembersListEventArgs e)
 		{
-			if (this.UpdatedMembers != null)
+			if (UpdatedMembers != null)
 			{
-				this.UpdatedMembers(this, e);
+				UpdatedMembers(this, e);
 			}
 		}
 		#endregion
@@ -132,7 +132,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._loginState;
+				return _loginState;
 			}
 		}
 
@@ -144,7 +144,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._name;
+				return _name;
 			}
 		}
 		#endregion
@@ -154,11 +154,11 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public RadioChatClient() : base()
 		{
-			this._loginState = LoginState.Parted;
+			_loginState = LoginState.Parted;
 		}
 		public RadioChatClient(Socket soc) : base(soc)
 		{
-			this._loginState = LoginState.Parted;
+			_loginState = LoginState.Parted;
 		}
 
 		/// <summary>
@@ -177,7 +177,7 @@ namespace Radio.Net.Chat
 				throw new ApplicationException("'_'で始まる名前は付けることができません。");
 
 			//名前を保存する
-			this._name = nickName;
+			_name = nickName;
 			//接続する
 			base.Connect(host, port);
 		}
@@ -188,13 +188,13 @@ namespace Radio.Net.Chat
 		/// <param name="msg">メッセージ</param>
 		public override void SendMessage(string msg)
 		{
-			if (this.LoginState != LoginState.Joined)
+			if (LoginState != LoginState.Joined)
 				throw new ApplicationException("チャットに参加していません。");
 
 			//CRLFを削除
 			msg = msg.Replace("\r\n", "");
 
-			this.Send(ClientCommands.Message + " " + msg);
+			Send(ClientCommands.Message + " " + msg);
 		}
 
 		/// <summary>
@@ -204,13 +204,13 @@ namespace Radio.Net.Chat
 		/// <param name="to">メッセージを送る相手の名前</param>
 		public void SendPrivateMessage(string msg, string to)
 		{
-			if (this.LoginState != LoginState.Joined)
+			if (LoginState != LoginState.Joined)
 				throw new ApplicationException("チャットに参加していません。");
 
 			//CRLFを削除
 			msg = msg.Replace("\r\n", "");
 
-			this.Send(ClientCommands.PrivateMessage + " " + to + " " + msg);
+			Send(ClientCommands.PrivateMessage + " " + to + " " + msg);
 		}
 
 		//データを受信した時
@@ -227,34 +227,34 @@ namespace Radio.Net.Chat
 			if (ServerCommands.Error == cmds[0])
 			{
 				//エラーコマンド
-				this.OnReceivedError(new ReceivedErrorEventArgs(cmds[2]));
+				OnReceivedError(new ReceivedErrorEventArgs(cmds[2]));
 			}
 			else if (ServerCommands.Message == cmds[0])
 			{
 				//メッセージコマンド
-				this.OnReceivedMessage(
+				OnReceivedMessage(
 					new ReceivedMessageEventArgs(cmds[1], cmds[2]));
 			}
 			else if (ServerCommands.PrivateMessage == cmds[0])
 			{
 				//プライベートメッセージコマンド
-				this.OnReceivedMessage(
+				OnReceivedMessage(
 					new ReceivedMessageEventArgs(cmds[1], cmds[2], true));
 			}
 			else if (ServerCommands.JoinMember == cmds[0])
 			{
 				//メンバー参加コマンド
-				this.OnJoinedMember(new MemberEventArgs(cmds[2]));
+				OnJoinedMember(new MemberEventArgs(cmds[2]));
 			}
 			else if (ServerCommands.PartMember == cmds[0])
 			{
 				//メンバー退室コマンド
-				this.OnPartedMember(new MemberEventArgs(cmds[2]));
+				OnPartedMember(new MemberEventArgs(cmds[2]));
 			}
 			else if (ServerCommands.MembersList == cmds[0])
 			{
 				//メンバーリストコマンド
-				this.OnUpdatedMembers(new MembersListEventArgs(cmds[2].Split(' ')));
+				OnUpdatedMembers(new MembersListEventArgs(cmds[2].Split(' ')));
 			}
 		}
 
@@ -263,9 +263,9 @@ namespace Radio.Net.Chat
 			base.OnConnected(e);
 
 			//チャットへの参加を要求する
-			this._loginState = LoginState.WaitJoin;
-			string line = ClientCommands.Login + " " + this._name;
-			this.Send(line);
+			_loginState = LoginState.WaitJoin;
+			string line = ClientCommands.Login + " " + _name;
+			Send(line);
 		}
 
 	}

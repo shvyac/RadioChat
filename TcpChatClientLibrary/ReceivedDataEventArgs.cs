@@ -12,7 +12,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._receivedString;
+				return _receivedString;
 			}
 		}
 
@@ -27,8 +27,8 @@ namespace Radio.Net.Chat
 
 		public ReceivedDataEventArgs(TcpChatClient c, string str)
 		{
-			this._client = c;
-			this._receivedString = str;
+			_client = c;
+			_receivedString = str;
 		}
 	}
 }

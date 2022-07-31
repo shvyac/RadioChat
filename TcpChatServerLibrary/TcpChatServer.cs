@@ -34,7 +34,7 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public virtual void Dispose()
 		{
-			this.Close();
+			Close();
 		}
 		#endregion
 
@@ -45,9 +45,9 @@ namespace Radio.Net.Chat
 		public event ServerEventHandler AcceptedClient;
 		protected virtual void OnAcceptedClient(ServerEventArgs e)
 		{
-			if (this.AcceptedClient != null)
+			if (AcceptedClient != null)
 			{
-				this.AcceptedClient(this, e);
+				AcceptedClient(this, e);
 			}
 		}
 
@@ -57,9 +57,9 @@ namespace Radio.Net.Chat
 		public event ReceivedDataEventHandler ReceivedData;
 		protected virtual void OnReceivedData(ReceivedDataEventArgs e)
 		{
-			if (this.ReceivedData != null)
+			if (ReceivedData != null)
 			{
-				this.ReceivedData(this, e);
+				ReceivedData(this, e);
 			}
 		}
 
@@ -69,15 +69,15 @@ namespace Radio.Net.Chat
 		public event ServerEventHandler DisconnectedClient;
 		protected virtual void OnDisconnectedClient(ServerEventArgs e)
 		{
-			if (this.DisconnectedClient != null)
+			if (DisconnectedClient != null)
 			{
-				this.DisconnectedClient(this, e);
+				DisconnectedClient(this, e);
 			}
 		}
 		#endregion
 
 		#region プロパティ
-		private Socket _server;
+		private Socket? _server;
 		/// <summary>
 		/// 基になるSocket
 		/// </summary>
@@ -85,7 +85,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._server;
+				return _server;
 			}
 		}
 
@@ -97,7 +97,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._serverState;
+				return _serverState;
 			}
 		}
 
@@ -109,7 +109,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._socketEP;
+				return _socketEP;
 			}
 		}
 
@@ -121,7 +121,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return (TcpChatClient[]) this._acceptedClients.ToArray(typeof(TcpChatClient));
+				return (TcpChatClient[]) _acceptedClients.ToArray(typeof(TcpChatClient));
 			}
 		}
 
@@ -133,11 +133,11 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._maxClients;
+				return _maxClients;
 			}
 			set
 			{
-				this._maxClients = value;
+				_maxClients = value;
 			}
 		}
 		#endregion
@@ -150,10 +150,10 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public TcpChatServer()
 		{
-			this._maxClients = 100;
-			this._server = new Socket(AddressFamily.InterNetwork,
+			_maxClients = 100;
+			_server = new Socket(AddressFamily.InterNetwork,
 				SocketType.Stream, ProtocolType.Tcp);
-			this._acceptedClients =
+			_acceptedClients =
 				System.Collections.ArrayList.Synchronized(
 				new System.Collections.ArrayList());
 		}
@@ -165,25 +165,23 @@ namespace Radio.Net.Chat
 		/// <param name="portNum">ポート番号</param>
 		public void Listen(string host, int portNum, int backlog)
 		{
-			if (this._server == null)
-				throw new ApplicationException("破棄されています。");
-			if (this.ServerState != ServerState.None)
-				throw new ApplicationException("すでにListen中です。");
+			if (_server == null)	throw new ApplicationException("破棄されています。");
+			if (ServerState != ServerState.None)	throw new ApplicationException("すでにListen中です。");
 
-			this._socketEP = new IPEndPoint(
-				Dns.Resolve(host).AddressList[0], portNum);
-			this._server.Bind(this._socketEP);
-				
-			//Listenを開始する
-			this._server.Listen(backlog);
-			this._serverState = ServerState.Listening;
+            //_socketEP = new IPEndPoint(Dns.Resolve(host).AddressList[0], portNum); //IPAddress.Parse(host)
+            _socketEP = new IPEndPoint(IPAddress.Parse(host), portNum); 
+            _server.Bind(_socketEP);            
+
+            //Listenを開始する
+            _server.Listen(backlog);
+			_serverState = ServerState.Listening;
 
 			//接続要求施行を開始する
-			this._server.BeginAccept(new AsyncCallback(this.AcceptCallback), null);
+			_server.BeginAccept(new AsyncCallback(AcceptCallback), null);
 		}
 		public void Listen(string host, int portNum)
 		{
-			this.Listen(host, portNum, 100);
+			Listen(host, portNum, 100);
 		}
 
 		/// <summary>
@@ -195,7 +193,7 @@ namespace Radio.Net.Chat
 			//CRLFを削除
 			msg = msg.Replace("\r\n", "");
 
-			this.SendToAllClients(msg);
+			SendToAllClients(msg);
 		}
 
 		/// <summary>
@@ -215,11 +213,11 @@ namespace Radio.Net.Chat
 		{
 			lock (this)
 			{
-				if (this._server == null)
+				if (_server == null)
 					return;
-				this._server.Close();
-				this._server = null;
-				this._serverState = ServerState.Stopped;
+				_server.Close();
+				_server = null;
+				_serverState = ServerState.Stopped;
 			}
 
 		}
@@ -229,8 +227,8 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public void Close()
 		{
-			this.StopListen();
-			this.CloseAllClients();
+			StopListen();
+			CloseAllClients();
 		}
 
 		/// <summary>
@@ -238,7 +236,7 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public void CloseClient(TcpChatClient client)
 		{
-			this._acceptedClients.Remove(client);
+			_acceptedClients.Remove(client);
 			client.Close();
 		}
 
@@ -247,11 +245,11 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public void CloseAllClients()
 		{
-			lock (this._acceptedClients.SyncRoot)
+			lock (_acceptedClients.SyncRoot)
 			{
-				while (this._acceptedClients.Count > 0)
+				while (_acceptedClients.Count > 0)
 				{
-					this.CloseClient((TcpChatClient) this._acceptedClients[0]);
+					CloseClient((TcpChatClient) _acceptedClients[0]);
 				}
 			}
 		}
@@ -262,11 +260,11 @@ namespace Radio.Net.Chat
 		/// <param name="str">送信する文字列</param>
 		protected void SendToAllClients(string str)
 		{
-			lock (this._acceptedClients.SyncRoot)
+			lock (_acceptedClients.SyncRoot)
 			{
-				for (int i = 0; i < this._acceptedClients.Count; i++)
+				for (int i = 0; i < _acceptedClients.Count; i++)
 				{
-					((TcpChatClient) this._acceptedClients[i]).Send(str);
+					((TcpChatClient) _acceptedClients[i]).Send(str);
 				}
 			}
 		}
@@ -290,31 +288,32 @@ namespace Radio.Net.Chat
 			{
 				lock (this)
 				{
-					soc = this._server.EndAccept(ar);
+					if(_server != null)
+					soc = _server.EndAccept(ar);
 				}
 			}
 			catch
 			{
-				this.Close();
+				Close();
 				return;
 			}
 
 			//TcpChatClientの作成
-			TcpChatClient client = this.CreateChatClient(soc);
+			TcpChatClient client = CreateChatClient(soc);
 			//最大数を超えていないか
-			if (this._acceptedClients.Count >= this.MaxClients)
+			if (_acceptedClients.Count >= MaxClients)
 			{
 				client.Close();
 			}
 			else
 			{
 				//コレクションに追加
-				this._acceptedClients.Add(client);
+				_acceptedClients.Add(client);
 				//イベントハンドラの追加
 				client.Disconnected += new EventHandler(client_Disconnected);
 				client.ReceivedData += new ReceivedDataEventHandler(client_ReceivedData);
 				//イベントを発生
-				this.OnAcceptedClient(new ServerEventArgs(client));
+				OnAcceptedClient(new ServerEventArgs(client));
 				//データ受信開始
 				if (!client.IsClosed)
 				{
@@ -323,7 +322,7 @@ namespace Radio.Net.Chat
 			}
 
 			//接続要求施行を再開する
-			this._server.BeginAccept(new AsyncCallback(this.AcceptCallback), null);
+			_server.BeginAccept(new AsyncCallback(AcceptCallback), null);
 		}
 
 		#region クライアントのイベントハンドラ
@@ -331,16 +330,16 @@ namespace Radio.Net.Chat
 		private void client_Disconnected(object sender, EventArgs e)
 		{
 			//リストから削除する
-			this._acceptedClients.Remove((TcpChatClient) sender);
+			_acceptedClients.Remove((TcpChatClient) sender);
 			//イベントを発生
-			this.OnDisconnectedClient(new ServerEventArgs((TcpChatClient) sender));
+			OnDisconnectedClient(new ServerEventArgs((TcpChatClient) sender));
 		}
 
 		//クライアントからデータを受信した時
 		private void client_ReceivedData(object sender, ReceivedDataEventArgs e)
 		{
 			//イベントを発生
-			this.OnReceivedData(new ReceivedDataEventArgs(
+			OnReceivedData(new ReceivedDataEventArgs(
 				(TcpChatClient) sender, e.ReceivedString));
 		}
 		#endregion

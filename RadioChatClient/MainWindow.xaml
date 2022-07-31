@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RadioChatClient"
         mc:Ignorable="d"
-        Title="MainWindow" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" Initialized="Window_Initialized">
+        Title="Client" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" Initialized="Window_Initialized" Height="319">
     <Grid VerticalAlignment="Top" HorizontalAlignment="Center">
         <TextBox x:Name="sendTextBox" HorizontalAlignment="Left" Height="40" Margin="5,245,0,0" TextWrapping="Wrap" Text="sendTextBox" VerticalAlignment="Top" Width="635"/>
         <ListView x:Name="memberListView" HorizontalAlignment="Left" Height="200" Margin="5,30,0,0" VerticalAlignment="Top" Width="275">
@@ -15,7 +15,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <RichTextBox x:Name="logTextBox" HorizontalAlignment="Left" Height="200" Margin="295,30,0,0" VerticalAlignment="Top" Width="485"/>
         <Button x:Name="sendButton" Content="sendButton" HorizontalAlignment="Left" Height="40" Margin="660,245,5,0" VerticalAlignment="Top" Width="117" Click="sendButton_Click"/>
         <Menu x:Name="menuMain" VerticalAlignment="Top" HorizontalAlignment="Left">
             <MenuItem x:Name="MenuItemFile" Header="File" VerticalAlignment="Bottom">
@@ -29,6 +28,7 @@
                 <MenuItem x:Name="MenuItemSendPrivateMessage" Header="SendPrivateMessage" Click="MenuItemSendPrivateMessage_Click"/>
             </MenuItem>
         </Menu>
+        <TextBox x:Name="TextBoxMSG" HorizontalAlignment="Left" Height="193" Margin="295,30,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="480"/>
 
     </Grid>
 </Window>

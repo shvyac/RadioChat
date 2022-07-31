@@ -22,7 +22,7 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public virtual void Dispose()
 		{
-			this.Close();
+			Close();
 		}
 		#endregion
 
@@ -30,36 +30,36 @@ namespace Radio.Net.Chat
 		/// <summary>
 		/// データを受信した
 		/// </summary>
-		public event ReceivedDataEventHandler ReceivedData;
+		public event ReceivedDataEventHandler? ReceivedData;
 		protected virtual void OnReceivedData(ReceivedDataEventArgs e)
 		{
-			if (this.ReceivedData != null)
+			if (ReceivedData != null)
 			{
-				this.ReceivedData(this, e);
+				ReceivedData(this, e);
 			}
 		}
 
 		/// <summary>
 		/// サーバーに接続した
 		/// </summary>
-		public event EventHandler Connected;
+		public event EventHandler? Connected;
 		protected virtual void OnConnected(EventArgs e)
 		{
-			if (this.Connected != null)
+			if (Connected != null)
 			{
-				this.Connected(this, e);
+				Connected(this, e);
 			}
 		}
 
 		/// <summary>
 		/// サーバーから切断された、あるいは切断した
 		/// </summary>
-		public event EventHandler Disconnected;
+		public event EventHandler? Disconnected;
 		protected virtual void OnDisconnected(EventArgs e)
 		{
-			if (this.Disconnected != null)
+			if (Disconnected != null)
 			{
-				this.Disconnected(this, e);
+				Disconnected(this, e);
 			}
 		}
 		#endregion
@@ -73,7 +73,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._encoding;
+				return _encoding;
 			}
 			set
 			{
@@ -81,7 +81,7 @@ namespace Radio.Net.Chat
 			}
 		}
 
-		private Socket _socket;
+		private Socket? _socket;
 		/// <summary>
 		/// 基になるSocket
 		/// </summary>
@@ -89,7 +89,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._socket;
+				return _socket;
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._localEndPoint;
+				return _localEndPoint;
 			}
 		}
 
@@ -113,7 +113,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._remoteEndPoint;
+				return _remoteEndPoint;
 			}
 		}
 
@@ -124,7 +124,7 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return (this._socket == null);
+				return (_socket == null);
 			}
 		}
 
@@ -149,7 +149,7 @@ namespace Radio.Net.Chat
 		/// <summary>
 		/// 受信したデータ
 		/// </summary>
-		protected System.IO.MemoryStream receivedBytes;
+		protected System.IO.MemoryStream? receivedBytes;
 		private bool startedReceiving = false;
 		#endregion
 
@@ -158,24 +158,24 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public TcpChatClient()
 		{
-			this.Initialize();
+			Initialize();
 			
-			this._socket = new Socket(AddressFamily.InterNetwork,
+			_socket = new Socket(AddressFamily.InterNetwork,
 				SocketType.Stream, ProtocolType.Tcp);
 		}
 		public TcpChatClient(Socket soc)
 		{
-			this.Initialize();
+			Initialize();
 			
-			this._socket = soc;
-			this._localEndPoint = (IPEndPoint) soc.LocalEndPoint;
-			this._remoteEndPoint = (IPEndPoint) soc.RemoteEndPoint;
+			_socket = soc;
+			_localEndPoint = (IPEndPoint) soc.LocalEndPoint;
+			_remoteEndPoint = (IPEndPoint) soc.RemoteEndPoint;
 		}
 
 		private void Initialize()
 		{
-			this.Encoding = System.Text.Encoding.UTF8;
-			this.MaxReceiveLenght = int.MaxValue;
+			Encoding = System.Text.Encoding.UTF8;
+			MaxReceiveLenght = int.MaxValue;
 		}
 
 		/// <summary>
@@ -185,10 +185,9 @@ namespace Radio.Net.Chat
 		/// <param name="port">ポート番号</param>
 		public void Connect(string host, int port)
 		{
-			if (this.IsClosed)
+			if (IsClosed)
 				throw new ApplicationException("閉じています。");
-			if (this._socket.Connected)
-				throw new ApplicationException("すでに接続されています。");
+			if (_socket.Connected)	throw new ApplicationException("すでに接続されています。");
 
             //接続する
 
@@ -196,18 +195,18 @@ namespace Radio.Net.Chat
             System.Net.IPAddress ipAdd = System.Net.IPAddress.Parse(host);
 
             //IPEndPoint ipEnd = new IPEndPoint(Dns.Resolve(host).AddressList[0], port);
-            IPEndPoint ipEnd = new IPEndPoint(ipAdd, port);
+            IPEndPoint? ipEnd = new IPEndPoint(ipAdd, port);
 
-            this._socket.Connect(ipEnd);
+            _socket.Connect(ipEnd);
 
-			this._localEndPoint = (IPEndPoint) this._socket.LocalEndPoint;
-			this._remoteEndPoint = (IPEndPoint) this._socket.RemoteEndPoint;
+			_localEndPoint = (IPEndPoint) _socket.LocalEndPoint;
+			_remoteEndPoint = (IPEndPoint) _socket.RemoteEndPoint;
 
 			//イベントを発生
-			this.OnConnected(new EventArgs());
+			OnConnected(new EventArgs());
 
 			//非同期データ受信を開始する
-			this.StartReceive();
+			StartReceive();
 		}
 
 		/// <summary>
@@ -217,21 +216,21 @@ namespace Radio.Net.Chat
 		{
 			lock (this)
 			{
-				if (this.IsClosed)
+				if (IsClosed)
 					return;
 
 				//閉じる
-				this._socket.Shutdown(SocketShutdown.Both);
-				this._socket.Close();
-				this._socket = null;
-				if (this.receivedBytes != null)
+				_socket.Shutdown(SocketShutdown.Both);
+				_socket.Close();
+				_socket = null;
+				if (receivedBytes != null)
 				{
-					this.receivedBytes.Close();
-					this.receivedBytes = null;
+					receivedBytes.Close();
+					receivedBytes = null;
 				}
 			}
 			//イベントを発生
-			this.OnDisconnected(new EventArgs());
+			OnDisconnected(new EventArgs());
 		}
 
 		/// <summary>
@@ -240,16 +239,16 @@ namespace Radio.Net.Chat
 		/// <param name="str">送信する文字列</param>
 		public void Send(string str)
 		{
-			if (this.IsClosed)
+			if (IsClosed)
 				throw new ApplicationException("閉じています。");
 
 			//文字列をByte型配列に変換
-			byte[] sendBytes = this.Encoding.GetBytes(str + "\r\n");
+			byte[] sendBytes = Encoding.GetBytes(str + "\r\n");
 
 			lock (this)
 			{
 				//データを送信する
-				this._socket.Send(sendBytes);
+				_socket.Send(sendBytes);
 			}
 		}
 
@@ -262,7 +261,7 @@ namespace Radio.Net.Chat
 			//CRLFを削除
 			msg = msg.Replace("\r\n", "");
 
-			this.Send(msg);
+			Send(msg);
 		}
 
 		/// <summary>
@@ -270,18 +269,18 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public void StartReceive()
 		{
-			if (this.IsClosed)
+			if (IsClosed)
 				throw new ApplicationException("閉じています。");
-			if (this.startedReceiving)
+			if (startedReceiving)
 				throw new ApplicationException("StartReceiveがすでに呼び出されています。");
 
 			//初期化
 			byte[] receiveBuffer = new byte[1024];
-			this.receivedBytes = new System.IO.MemoryStream();
-			this.startedReceiving = true;
+			receivedBytes = new System.IO.MemoryStream();
+			startedReceiving = true;
 
 			//非同期受信を開始
-			this._socket.BeginReceive(receiveBuffer,
+			_socket.BeginReceive(receiveBuffer,
 				0, receiveBuffer.Length,
 				SocketFlags.None, new AsyncCallback(ReceiveDataCallback),
 				receiveBuffer);
@@ -290,15 +289,15 @@ namespace Radio.Net.Chat
 		//BeginReceiveのコールバック
 		private void ReceiveDataCallback(IAsyncResult ar)
 		{
-			if (this._socket == null) return;
+			if (_socket == null) return;
 			int len = -1;
 			//読み込んだ長さを取得
 			try
 			{
 				lock (this)
 				{
-					if(this._socket != null)
-					len = this._socket.EndReceive(ar);
+					if(_socket != null)
+					len = _socket.EndReceive(ar);
 				}
 			}
 			catch
@@ -307,7 +306,7 @@ namespace Radio.Net.Chat
 			//切断されたか調べる
 			if (len <= 0)
 			{
-				this.Close();
+				Close();
 				return;
 			}
 
@@ -315,25 +314,25 @@ namespace Radio.Net.Chat
 			byte[] receiveBuffer = (byte[]) ar.AsyncState;
 
 			//受信したデータを蓄積する
-			this.receivedBytes.Write(receiveBuffer, 0, len);
+			receivedBytes.Write(receiveBuffer, 0, len);
 			//最大値を超えた時は、接続を閉じる
-			if (this.receivedBytes.Length > this.MaxReceiveLenght)
+			if (receivedBytes.Length > MaxReceiveLenght)
 			{
-				this.Close();
+				Close();
 				return;
 			}
 			//最後まで受信したか調べる
-			if (this.receivedBytes.Length >= 2)
+			if (receivedBytes.Length >= 2)
 			{
-				this.receivedBytes.Seek(-2, System.IO.SeekOrigin.End);
-				if (this.receivedBytes.ReadByte() == (int) '\r' &&
-					this.receivedBytes.ReadByte() == (int) '\n')
+				receivedBytes.Seek(-2, System.IO.SeekOrigin.End);
+				if (receivedBytes.ReadByte() == (int) '\r' &&
+					receivedBytes.ReadByte() == (int) '\n')
 				{
 					//最後まで受信した時
 					//受信したデータを文字列に変換
-					string str = this.Encoding.GetString(
-						this.receivedBytes.ToArray());
-					this.receivedBytes.Close();
+					string str = Encoding.GetString(
+						receivedBytes.ToArray());
+					receivedBytes.Close();
 					//一行ずつに分解する
 					int startPos = 0, endPos;
 					while ((endPos = str.IndexOf("\r\n", startPos)) >=0 )
@@ -341,20 +340,20 @@ namespace Radio.Net.Chat
 						string line = str.Substring(startPos, endPos - startPos);
 						startPos = endPos + 2;
 						//イベントを発生
-						this.OnReceivedData(new ReceivedDataEventArgs(this, line));
+						OnReceivedData(new ReceivedDataEventArgs(this, line));
 					}
-					this.receivedBytes = new System.IO.MemoryStream();
+					receivedBytes = new System.IO.MemoryStream();
 				}
 				else
 				{
-					this.receivedBytes.Seek(0, System.IO.SeekOrigin.End);
+					receivedBytes.Seek(0, System.IO.SeekOrigin.End);
 				}
 			}
 
 			lock (this)
 			{
 				//再び受信開始
-				this._socket.BeginReceive(receiveBuffer,
+				_ = _socket.BeginReceive(receiveBuffer,
 					0, receiveBuffer.Length,
 					SocketFlags.None, new AsyncCallback(ReceiveDataCallback)
 					, receiveBuffer);

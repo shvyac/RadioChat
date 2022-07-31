@@ -18,7 +18,7 @@ namespace Radio.Net.Chat
 
 		public ServerEventArgs(TcpChatClient c)
 		{
-			this._client = c;
+			_client = c;
 		}
 	}
 }

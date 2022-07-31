@@ -3,7 +3,7 @@ using System;
 namespace Radio.Net.Chat
 {
 	/// <summary>
-	/// Dobon Chat Clientが送信するコマンド
+	/// RadioChatClientが送信するコマンド
 	/// </summary>
 	public class ClientCommands
 	{

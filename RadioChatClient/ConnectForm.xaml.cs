@@ -31,13 +31,13 @@ namespace RadioChatClient
         }
         private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-            this.Close();
+            DialogResult = true;
+            Close();
         }
 
         private void closeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -48,7 +48,7 @@ namespace RadioChatClient
         {
             hostTextBox.Text = "192.168.1.6";
             portUpDown.Text = "23";
-            nameTextBox.Text = "user_inited";
+            nameTextBox.Text = "user001";
         }
     }
 }

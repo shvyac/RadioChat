@@ -4,7 +4,7 @@ using System.Net.Sockets;
 namespace Radio.Net.Chat
 {
 	/// <summary>
-	/// DobonChatServer‚ªŽó‚¯“ü‚ê‚½TcpChatClient
+	/// RadioChatServer‚ªŽó‚¯“ü‚ê‚½TcpChatClient
 	/// </summary>
 	public class AcceptedChatClient : TcpChatClient
 	{
@@ -16,11 +16,11 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._loginState;
+				return _loginState;
 			}
 			set
 			{
-				this._loginState = value;
+				_loginState = value;
 			}
 		}
 
@@ -32,11 +32,11 @@ namespace Radio.Net.Chat
 		{
 			get
 			{
-				return this._name;
+				return _name;
 			}
 			set
 			{
-				this._name = value;
+				_name = value;
 			}
 		}
 
@@ -45,12 +45,12 @@ namespace Radio.Net.Chat
 		/// </summary>
 		public AcceptedChatClient() : base()
 		{
-			this._loginState = LoginState.Parted;
+			_loginState = LoginState.Parted;
 		}
 
 		public AcceptedChatClient(Socket soc) : base(soc)
 		{
-			this._loginState = LoginState.Parted;
+			_loginState = LoginState.Parted;
 		}
 	}
 }
