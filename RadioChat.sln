@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatClientLibrary", "R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TcpChatClientLibrary", "TcpChatClientLibrary\TcpChatClientLibrary.csproj", "{412D1C0C-3D0E-467B-9102-AE4D0187C52B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatServerLibrary", "DobonChatServerLibrary\RadioChatServerLibrary.csproj", "{B830663E-CA56-4429-93EF-747C40ECFDCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadioChatServerLibrary", "RadioChatServerLibrary\RadioChatServerLibrary.csproj", "{B830663E-CA56-4429-93EF-747C40ECFDCC}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583} = {0C64AEDC-E58A-4EFD-9BA1-7FE9663E9583}
 		{412D1C0C-3D0E-467B-9102-AE4D0187C52B} = {412D1C0C-3D0E-467B-9102-AE4D0187C52B}
