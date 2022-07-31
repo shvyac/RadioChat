@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DobonChatServerLibrary\RadioChatServerLibrary.csproj" />
     <ProjectReference Include="..\RadioChatClientLibrary\RadioChatClientLibrary.csproj" />
+    <ProjectReference Include="..\RadioChatServerLibrary\RadioChatServerLibrary.csproj" />
     <ProjectReference Include="..\TcpChatServerLibrary\TcpChatServerLibrary.csproj" />
   </ItemGroup>
 
