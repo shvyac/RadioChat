@@ -46,7 +46,7 @@ namespace RadioChatClient
 
         private void Window_Initialized(object sender, System.EventArgs e)
         {
-            hostTextBox.Text = "192.168.1.6";
+            hostTextBox.Text = "192.168.1.8";
             portUpDown.Text = "23";
             nameTextBox.Text = "user001";
         }

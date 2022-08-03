@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RadioChatClient"
         mc:Ignorable="d"
-        Title="Client" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" Initialized="Window_Initialized" Height="319" Width="770">
+        Title="Radio Client" HorizontalAlignment="Center" VerticalAlignment="Center" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" Initialized="Window_Initialized" Height="319" Width="770">
     <Grid>
         <Menu x:Name="menuMain" VerticalAlignment="Top" Height="20">
             <MenuItem x:Name="MenuItemFile" Header="File" VerticalAlignment="Bottom">
@@ -19,19 +19,27 @@
                 <MenuItem x:Name="MenuItemSendPrivateMessage" Header="SendPrivateMessage" Click="MenuItemSendPrivateMessage_Click"/>
             </MenuItem>
         </Menu>
-
-        <ListView x:Name="memberListView" HorizontalAlignment="Left" Margin="5,25,0,80" Width="275">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Nick Name" DisplayMemberBinding="{Binding Name}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <TextBox x:Name="TextBoxMSG" HorizontalAlignment="Left" Margin="290,25,0,80" TextWrapping="Wrap" Text="TextBox" Width="477"/>
-        <TextBox x:Name="sendTextBox" HorizontalAlignment="Left" Height="40" Margin="5,230,0,30" TextWrapping="Wrap" Text="sendTextBox" VerticalAlignment="Bottom" Width="635"/>
-        <Button x:Name="sendButton" Content="sendButton" HorizontalAlignment="Left" Height="40" Margin="645,230,0,30" VerticalAlignment="Bottom" Width="122" Click="sendButton_Click"/>
-        <StatusBar VerticalAlignment="Bottom" Height="24" Background="{x:Null}">
-            <TextBox x:Name="TextBoxStatusBar" TextWrapping="Wrap" Text="TextBox" HorizontalAlignment="Left"/>
+        <Grid Margin="0,20,0,65">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="57*"/>
+                <ColumnDefinition Width="97*"/>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="memberListView" Margin="5,5,5,5">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Nick Name" DisplayMemberBinding="{Binding Name}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <TextBox x:Name="TextBoxMSG" Margin="5,5,5,5" TextWrapping="Wrap" Text="TextBox" Grid.Column="1"/>
+        </Grid>
+        <TextBox x:Name="sendTextBox" Height="30" Margin="5,230,135,30" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="635"/>
+        <Button x:Name="sendButton" Content="sendButton" HorizontalAlignment="Right" Height="30" Margin="645,230,5,30" VerticalAlignment="Bottom" Width="125" Click="sendButton_Click"/>
+        <StatusBar VerticalAlignment="Bottom" Height="24" Margin="5,0,5,0">
+            <StatusBar.Background>
+                <SolidColorBrush Color="{DynamicResource {x:Static SystemColors.ControlColorKey}}"/>
+            </StatusBar.Background>
+            <TextBox x:Name="TextBoxStatusBar" TextWrapping="Wrap" HorizontalAlignment="Left" BorderBrush="{x:Null}" Background="{x:Null}"/>
         </StatusBar>
 
     </Grid>

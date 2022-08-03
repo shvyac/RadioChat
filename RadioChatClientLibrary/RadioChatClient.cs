@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using Radio.Net.Chat;
@@ -268,5 +269,19 @@ namespace Radio.Net.Chat
 			Send(line);
 		}
 
+		public IPAddress GetLocalIPAddress()
+		{
+			IPAddress? localIP = null;
+            IPHostEntry ipEntry = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in ipEntry.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    Debug.WriteLine("IP Address = " + ip.ToString());
+					localIP = ip;
+                }
+            }
+			return localIP;
+        }
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -8,20 +9,22 @@ namespace RadioChatServerApp
 {
     public partial class MainWindow : Window
     {
+        #region InitializeComponent
         public MainWindow()
         {
             InitializeComponent();
-        }
+        } 
+        #endregion
 
         private delegate void PrintStringInvoker(string str, Color col);
         private RadioChatServer? server;
 
-        #region メソッド
-        /// <summary>
-        /// Listenを開始する
-        /// </summary>
-        /// <param name="hostName"></param>
-        /// <param name="port"></param>
+        #region Proc
+        public void Listen()
+        {
+            Listen("0.0.0.0", 23);
+        }
+
         public void Listen(string hostName, int port)
         {
             if (server != null)
@@ -50,7 +53,7 @@ namespace RadioChatServerApp
 
             //ステータスバーに表示
             ShowMessage(server.LocalEndPoint.ToString() + "をListen中...");
-            AddLog(server.LocalEndPoint.ToString() + "のListenを開始しました。", Colors.Gray);
+            AddLog(server.LocalEndPoint.ToString() + "のListenを開始しました。");
 
             Title = Application.Current.MainWindow.GetType().Assembly.ToString() + " - Listen中(" + server.LocalEndPoint.ToString() + ")";
 
@@ -58,11 +61,7 @@ namespace RadioChatServerApp
             menuDisconnectAllClient.IsEnabled = true;
             menuDisconnectClient.IsEnabled = true;
             menuStopListen.IsEnabled = true;
-        }
-        public void Listen()
-        {
-            Listen("0.0.0.0", 23);
-        }
+        }        
 
         /// <summary>
         /// Listenを中止する
@@ -83,7 +82,7 @@ namespace RadioChatServerApp
 
             //ステータスバーに表示
             ShowMessage("Listenしていません");
-            AddLog("Listenを中止しました。", Colors.Gray);
+            AddLog("Listenを中止しました。");
 
             menuListen.IsEnabled = true;
             menuDisconnectAllClient.IsEnabled = false;
@@ -109,11 +108,11 @@ namespace RadioChatServerApp
         /// </summary>
         /// <param name="str"></param>
         /// <param name="col"></param>
-        public void AddLog(string str, Color col)
+        public void AddLog(string str)
         {
-            Dispatcher.Invoke(new Action<String, Color>(PrivateAddLog), str, col);
+            Dispatcher.Invoke(new Action<String>(PrivateAddLog), str);
         }
-        private void PrivateAddLog(string str, Color col)
+        private void PrivateAddLog(string str)
         {
             string addText = DateTime.Now.ToLongTimeString() + " : " + str + "\n";
             TextBoxMSG.AppendText(addText);
@@ -154,22 +153,7 @@ namespace RadioChatServerApp
         }
         #endregion
 
-        #region フォームとコントロールのイベントハンドラ
-        //フォームのロード
-        private void ServerForm_Load(object sender, System.EventArgs e)
-        {
-            Listen();
-        }
-
-        //フォームを閉じた時
-        private void ServerForm_Closed(object sender, System.EventArgs e)
-        {
-            if (server != null)
-            {
-                server.Close();
-            }
-        }
-
+        #region Menu Events
         private void menuExit_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -210,14 +194,13 @@ namespace RadioChatServerApp
         }
         #endregion
 
-        #region RadioChatServerのイベントハンドラ
+        #region RadioChatServer Events
         //クライアントを受け入れた時
         private void server_AcceptedClient(object sender, ServerEventArgs e)
         {
             UpdateClientList();
             AddLog(string.Format("({0})が接続しました。",
-                e.Client.RemoteEndPoint.Address.ToString()),
-                Colors.Black);
+                e.Client.RemoteEndPoint.Address.ToString()));
         }
 
         //クライアントが切断した時
@@ -226,8 +209,7 @@ namespace RadioChatServerApp
             UpdateClientList();
             AddLog(string.Format("[{0}]({1})が切断しました。",
                 ((AcceptedChatClient)e.Client).Name,
-                e.Client.RemoteEndPoint.Address.ToString()),
-                Colors.Black);
+                e.Client.RemoteEndPoint.Address.ToString()));
         }
 
         //クライアントからデータを受信した時
@@ -236,7 +218,7 @@ namespace RadioChatServerApp
             string str =
                 e.Client.RemoteEndPoint.Address.ToString() +
                 " > " + e.ReceivedString;
-            AddLog(str, Colors.LightGray);
+            AddLog(str);
         }
 
         //メンバーがログインしたとき
@@ -244,8 +226,7 @@ namespace RadioChatServerApp
         {
             UpdateClientList();
             AddLog(string.Format("{0}が参加しました。",
-                ((AcceptedChatClient)e.Client).Name),
-                Colors.Black);
+                ((AcceptedChatClient)e.Client).Name));
         }
 
         //メンバーがログアウトした時
@@ -253,10 +234,18 @@ namespace RadioChatServerApp
         {
             UpdateClientList();
             AddLog(string.Format("{0}が退室しました。",
-                ((AcceptedChatClient)e.Client).Name),
-                Colors.Black);
+                ((AcceptedChatClient)e.Client).Name));
         }
 
         #endregion
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            Radio.Net.Chat.RadioChatClient rc = new();
+            IPAddress addr = rc.GetLocalIPAddress();
+            Title = Title + " " + addr.ToString();
+            TextBoxStatusBar.Text = addr.ToString();
+            AddLog(addr.ToString());
+        }
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RadioChatServerApp"
         mc:Ignorable="d"
-        Title="Server" Height="270" Width="645">
+        Title="Radio Server" Height="270" Width="645" Initialized="Window_Initialized">
     <Grid>
         <Menu x:Name="menuMain" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem x:Name="menuFile" Header="File" Width="60" HorizontalContentAlignment="Center" FontStretch="SemiCondensed">

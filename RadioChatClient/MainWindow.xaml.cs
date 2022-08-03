@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -127,16 +128,11 @@ namespace RadioChatClient
             sendTextBox.Focus();
         }
 
-        /// <summary>
-        /// ログに文字列を一行追加する
-        /// </summary>
-        /// <param name="str"></param>
-        /// <param name="col"></param>
-        public void AddLog(string str, Color col)
+        public void AddLog(string str)
         {
-            Dispatcher.Invoke(new Action<String, Color>(PrivateAddLog), str, col);
+            Dispatcher.Invoke(new Action<String>(PrivateAddLog), str);
         }
-        public void PrivateAddLog(string str, Color col)
+        public void PrivateAddLog(string str)
         {
             string addText = DateTime.Now.ToLongTimeString() + " : " + str + "\n";
             TextBoxMSG.AppendText(addText);
@@ -270,7 +266,7 @@ namespace RadioChatClient
         /// <param name="e"></param>
         private void client_ReceivedData(object sender, ReceivedDataEventArgs e)
         {
-            AddLog(e.ReceivedString, Colors.LightGray);
+            AddLog(e.ReceivedString);
         }
 
         /// <summary>
@@ -282,7 +278,7 @@ namespace RadioChatClient
         {
             client = (Radio.Net.Chat.RadioChatClient)sender;
             Dispatcher.Invoke(new Action(SetToConnected));
-            AddLog("サーバーに接続しました。", Colors.Blue);
+            AddLog("サーバーに接続しました。");
         }
 
         /// <summary>
@@ -294,7 +290,7 @@ namespace RadioChatClient
         {
             client = null;
             Dispatcher.Invoke(new Action(SetToDisconnected));
-            AddLog("サーバーから切断しました。", Colors.Blue);
+            AddLog("サーバーから切断しました。");
             if (membersList != null)
             {
                 membersList.Clear();
@@ -313,14 +309,12 @@ namespace RadioChatClient
             {
                 //自分がログインしたとき
                 membersList = new System.Collections.Specialized.StringCollection();
-                AddLog("チャットへの参加に成功しました。",
-                    Colors.Blue);
+                AddLog("チャットへの参加に成功しました。");
             }
             else
             {
                 //誰かがログインしたとき
-                AddLog(string.Format("[{0}]さんが参加しました。", e.Name),
-                    Colors.Blue);
+                AddLog(string.Format("[{0}]さんが参加しました。", e.Name));
             }
 
             //メンバーリストを更新
@@ -339,15 +333,13 @@ namespace RadioChatClient
             {
                 //自分がログアウトしたとき
                 membersList.Clear();
-                AddLog("退室しました。",
-                    Colors.Blue);
+                AddLog("退室しました。");
             }
             else
             {
                 //誰かがログアウトしたとき
                 membersList.Remove(e.Name);
-                AddLog(string.Format("[{0}]さんが退室しました。", e.Name),
-                    Colors.Blue);
+                AddLog(string.Format("[{0}]さんが退室しました。", e.Name));
             }
 
             //メンバーリストを更新
@@ -362,9 +354,9 @@ namespace RadioChatClient
         private void client_ReceivedMessage(object sender, ReceivedMessageEventArgs e)
         {
             if (!e.PrivateMessage)
-                AddLog(e.From + " > " + e.Message, Colors.Black);
+                AddLog(e.From + " > " + e.Message);
             else
-                AddLog(e.From + " > " + e.Message, Colors.Brown);
+                AddLog(e.From + " > " + e.Message);
         }
 
         /// <summary>
@@ -387,7 +379,7 @@ namespace RadioChatClient
         /// <param name="e"></param>
         private void client_ReceivedError(object sender, ReceivedErrorEventArgs e)
         {
-            AddLog("エラー : " + e.ErrorMessage, Colors.Red);
+            AddLog("エラー : " + e.ErrorMessage);
 
             if (client.LoginState != LoginState.Joined)
             {
@@ -408,7 +400,10 @@ namespace RadioChatClient
 
         private void Window_Initialized(object sender, EventArgs e)
         {
-
+            Radio.Net.Chat.RadioChatClient rc = new();
+            IPAddress addr = rc.GetLocalIPAddress();
+            Title = Title + " " + addr.ToString();
+            TextBoxStatusBar.Text = addr.ToString();
         }
     }
 }
