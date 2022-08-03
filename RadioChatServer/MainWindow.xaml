@@ -7,16 +7,6 @@
         mc:Ignorable="d"
         Title="Server" Height="270" Width="645">
     <Grid>
-        <ListView x:Name="clientViewList" HorizontalAlignment="Left" Height="200" Margin="5,25,0,0" VerticalAlignment="Top" Width="315" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <StatusBar x:Name="mainStatusbar" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Background="{x:Null}">
-            <TextBox x:Name="TextBoxStatusBar" TextWrapping="Wrap" Text="TextBox" Width="400" Background="{x:Null}" BorderBrush="{x:Null}"/>
-        </StatusBar>
         <Menu x:Name="menuMain" Height="20" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem x:Name="menuFile" Header="File" Width="60" HorizontalContentAlignment="Center" FontStretch="SemiCondensed">
                 <MenuItem x:Name="menuExit" Header="Exit" Click="menuExit_Click"/>
@@ -29,7 +19,23 @@
                 <MenuItem x:Name="menuDisconnectAllClient" Header="DisconnectAllClient" Click="menuDisconnectAllClient_Click"/>
             </MenuItem>
         </Menu>
-        <TextBox x:Name="TextBoxMSG" HorizontalAlignment="Left" Height="200" Margin="325,25,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="310"/>
+        <Grid Margin="5,20,5,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ListView x:Name="clientViewList" d:ItemsSource="{d:SampleData ItemCount=5}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <TextBox x:Name="TextBoxMSG" TextWrapping="Wrap" Grid.Column="1"/>
+        </Grid>
+        <StatusBar x:Name="mainStatusbar" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Background="{x:Null}" Height="24">
+            <TextBox x:Name="TextBoxStatusBar" TextWrapping="Wrap" Text="TextBox" Width="400" Background="{x:Null}" BorderBrush="{x:Null}"/>
+        </StatusBar>
 
     </Grid>
 </Window>
