@@ -16,7 +16,7 @@ namespace RadioChatClient
             InitializeComponent();
         }
 
-        //private delegate void PrintStringInvoker(string str, Color col);
+        //private delegate void PrintStringInvoker(string str, Color col);///
 
         private Radio.Net.Chat.RadioChatClient? client;
 
